@@ -36,12 +36,34 @@ class ToDoTVC: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
       let cell = UITableViewCell()
-        cell.textLabel?.text = toDos[indexPath.row].name
-
-return cell
+         // Cell Manipulation
+        let currentToDo = toDos[indexPath.row]
+        if currentToDo.important {
+         cell.textLabel?.text = "‼️" + currentToDo.name
+        } else {
+         cell.textLabel?.text = currentToDo.name
+        }
+        return cell
     }
     
-    // INIT
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        let selectedTodo = toDos[indexPath.row]
+        performSegue(withIdentifier: "moveToComplete", sender: selectedTodo)
+    }
+    
+    
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let createVC = segue.destination as? NewToDoViewController {
+            createVC.toDoTableVC = self
+        }
+        
+        if let completeVC = segue.destination as? CompleteViewController {
+            if let selectedToDo = sender as? ToDo {
+            completeVC.todo = selectedToDo
+            }
+        }
+    }
    
     
 }//E.N.D.
