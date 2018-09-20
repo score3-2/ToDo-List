@@ -48,11 +48,12 @@
 		DA11CFA62130C69C0078282F /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				DA53FC50212FB2090033E40E /* AppDelegate.swift */,
 				DA53FC52212FB2090033E40E /* ViewController.swift */,
 				DA11CFA32130C6670078282F /* CompleteViewController.swift */,
 				DA11CFA12130AAFF0078282F /* NewToDoViewController.swift */,
-				DA53FC65212FBAAD0033E40E /* ToDoObject.swift */,
 				DA53FC67212FBBD20033E40E /* ToDoTVC.swift */,
+				DA53FC65212FBAAD0033E40E /* ToDoObject.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -77,7 +78,6 @@
 		DA53FC4F212FB2090033E40E /* ToDo List */ = {
 			isa = PBXGroup;
 			children = (
-				DA53FC50212FB2090033E40E /* AppDelegate.swift */,
 				DA53FC54212FB2090033E40E /* Main.storyboard */,
 				DA53FC5A212FB20B0033E40E /* Assets.xcassets */,
 				DA53FC5C212FB20B0033E40E /* LaunchScreen.storyboard */,

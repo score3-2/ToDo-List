@@ -10,36 +10,40 @@ import UIKit
 
 class ToDoTVC: UITableViewController {
     
-    //PROPERTIES
-    var toDos = [ToDo]()
+    // PROPERTIES
+  var toDoCoreData = [ToDoCoreData]()
 
-    //VDL
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        let toDo1 = ToDo()
-        toDo1.name = "walk the dog"
-        toDo1.important = false
-        
-        let toDo2 = ToDo()
-        toDo2.name = "Buy Milk"
-        toDo2.important = false
-        
-        toDos = [toDo1, toDo2]
-}
-
-    // MARK: - Table view data source
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return toDos.count
+    // View
+   override func viewWillAppear(_ animated: Bool) {
+        getToDos()
     }
 
+    // Methods
+    
+    func getToDos() {
+        if let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext{
+            if let toDosFromCoreData =  try? context.fetch(ToDoCoreData.fetchRequest()) {
+                if let toDos = toDosFromCoreData as? [ToDoCoreData] {
+                    ToDoCoreData = toDos
+                }
+            }
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // #warning Incomplete implementation, return the number of rows
+        return ToDoCoreData.count
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
       let cell = UITableViewCell()
          // Cell Manipulation
-        let currentToDo = toDos[indexPath.row]
+        let currentToDo = ToDoCoreData[indexPath.row]
         if currentToDo.important {
-         cell.textLabel?.text = "‼️" + currentToDo.name
+            if let name = currentToDo.name{
+                cell.textLabel?.text = "‼️" + currentToDo.name
+            }
+         
         } else {
          cell.textLabel?.text = currentToDo.name
         }
@@ -48,16 +52,14 @@ class ToDoTVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        let selectedTodo = toDos[indexPath.row]
+        let selectedTodo = ToDoCoreData[indexPath.row]
         performSegue(withIdentifier: "moveToComplete", sender: selectedTodo)
     }
-    
     
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let createVC = segue.destination as? NewToDoViewController {
             createVC.toDoTableVC = self
         }
-        
         if let completeVC = segue.destination as? CompleteViewController {
             if let selectedToDo = sender as? ToDo {
             completeVC.todo = selectedToDo

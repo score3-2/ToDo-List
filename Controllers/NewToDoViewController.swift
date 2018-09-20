@@ -18,15 +18,18 @@ class NewToDoViewController: UIViewController {
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var impoertanTLabel: UILabel!
     @IBOutlet weak var switcher: UISwitch!
+   
+    //Add Button From + Screen.
     @IBAction func addToDo(_ sender: Any) {
-        let newToDo = ToDo()
-        newToDo.important = switcher.isOn
-        if let name = textField.text {
-            newToDo.name = name
+      
+        if let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext{
+            let newToDo = ToDoCoreData(context: context)
+            newToDo.important = switcher.isOn
+            if let name = textField.text {
+                newToDo.name = name
         }
-        
-        toDoTableVC?.toDos.append(newToDo)
-        toDoTableVC?.tableView.reloadData()
+            (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
+    }
         navigationController?.popViewController(animated: true)
     }
     
@@ -38,3 +41,6 @@ class NewToDoViewController: UIViewController {
     }
     
 }//END
+
+//toDoTableVC?.toDos.append(newToDo)
+//toDoTableVC?.tableView.reloadData()
